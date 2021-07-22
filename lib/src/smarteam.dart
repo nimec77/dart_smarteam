@@ -1,12 +1,13 @@
 import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
-import 'package:smarteam/src/contants.dart';
+import 'package:smart_compute/smart_compute.dart';
 import 'package:smarteam/src/errors/smarteam_error.dart';
 import 'package:smarteam/src/function_names.dart';
 import 'package:smarteam/src/pods/either_bool_pod.dart';
 
 import 'helper.dart' as helper;
+import 'isloate_functions.dart' as fun;
 import 'types/types.dart';
 
 typedef RightTest = Pointer<EitherBoolPod> Function();
@@ -15,18 +16,17 @@ typedef LeftTest = Pointer<EitherBoolPod> Function();
 class Smarteam {
   const Smarteam();
 
+  static final _smartCompute = SmartCompute();
   static final _smartFunctions = <String, dynamic>{};
 
-  EitherBool init() {
+  Future<EitherBool> init() async {
     try {
-      if (_smartFunctions.isNotEmpty) {
+      if (_smartCompute.isRunning) {
         return const Right(true);
       }
-      final smarteamLib = DynamicLibrary.open(kSmarteamLibrary);
-      final rightTestPointer = smarteamLib.lookup<NativeFunction<RightTest>>(kRightTest);
-      _smartFunctions[kRightTest] = rightTestPointer.asFunction<RightTest>();
-      final leftTestPointer = smarteamLib.lookup<NativeFunction<LeftTest>>(kLeftTest);
-      _smartFunctions[kLeftTest] = leftTestPointer.asFunction<LeftTest>();
+      await _smartCompute.turnOn();
+      final result = await _smartCompute.compute<FunctionsMap, FunctionsMap>(fun.smarteamInit);
+      print(result);
     } on ArgumentError catch (error) {
       return Left(error);
     }
@@ -62,3 +62,4 @@ class Smarteam {
     return identical(this, other);
   }
 }
+

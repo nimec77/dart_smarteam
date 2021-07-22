@@ -9,6 +9,9 @@ environment:
 dependencies:
   dartz: ^0.10.0-nullsafety.2
   ffi: ^1.1.2
+  smart_compute:
+    git:
+      url: https://github.com/nimec77/smart_compute.git
 
 dev_dependencies:
   very_good_analysis: ^2.1.2
