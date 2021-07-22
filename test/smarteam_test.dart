@@ -38,4 +38,15 @@ void main() {
     expect(result.isRight(), equals(true));
     expect(result | false, equals(true));
   });
+
+  test('Smarteam LeftTest test', () {
+    final result = smarteam.leftTest();
+
+    expect(result, isA<EitherBool>());
+    expect(result.isLeft(), equals(true));
+    result.leftMap((l) {
+      expect(l, isA<SmartRuntimeError>());
+      expect(l.toString(), equals('SmartRuntimeError: Runtime Error'));
+    });
+  });
 }
