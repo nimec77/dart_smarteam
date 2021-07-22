@@ -1,0 +1,1 @@
+const kSmarteamLibrary = 'utils/smart_com.dll';
