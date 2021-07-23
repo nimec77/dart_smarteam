@@ -9,6 +9,10 @@ void main() {
     await smarteam.init();
   });
 
+  tearDownAll(() async {
+    await smarteam.dispose();
+  });
+
   test('Smarteam Init test', () async {
     const smart = Smarteam();
     final result = await smart.init();

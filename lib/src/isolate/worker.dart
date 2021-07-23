@@ -4,7 +4,7 @@ import 'dart:isolate';
 import 'package:dartz/dartz.dart';
 import 'package:smarteam/src/isolate/isolate_result.dart';
 import 'package:smarteam/src/isolate/isolate_task.dart';
-import 'smarteam_isolate.dart' as process;
+import 'package:smarteam/src/isolate/smarteam_isolate.dart';
 
 typedef ReturnType = Either<Error, dynamic>;
 
@@ -37,7 +37,7 @@ class Worker {
     _receivePort = ReceivePort();
 
     _isolate = await Isolate.spawn(
-      process.isolateEntryPoint,
+      SmarteamIsolate.isolateEntryPoint,
       IsolateParams(_receivePort.sendPort),
       debugName: name,
       errorsAreFatal: false,
