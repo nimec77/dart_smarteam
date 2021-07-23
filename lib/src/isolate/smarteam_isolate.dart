@@ -20,7 +20,7 @@ Future<void> isolateEntryPoint(IsolateParams params) async {
 
   await for (final task in receivePort.cast<IsolateTask>()) {
     try {
-      final  computationResult = await runFunction(task.functionName, param: task.param);
+      final computationResult = await runFunction(task.functionName, param: task.param);
 
       final result = IsolateResult(
         result: computationResult,
@@ -64,21 +64,29 @@ Future<dynamic> runFunction<P>(String functionName, {P? param}) async {
   return result;
 }
 
-Future<bool> init() async {
+Future<EitherBool> init() async {
   if (_functionsMap.isNotEmpty) {
-    return true;
+    return const Right(true);
   }
   final smarteamLib = DynamicLibrary.open(kSmarteamLibrary);
-  final rightTestPointer = smarteamLib.lookup<NativeFunction<RightTest>>(kRightTest);
-  _functionsMap[kRightTest] = rightTestPointer.asFunction<RightTest>();
-  final leftTestPointer = smarteamLib.lookup<NativeFunction<LeftTest>>(kLeftTest);
-  _functionsMap[kLeftTest] = leftTestPointer.asFunction<LeftTest>();
+  final initPointer = smarteamLib.lookup<NativeFunction<FnBoolVoid>>(kInit);
+  _functionsMap[kInit] = initPointer.asFunction<FnBoolVoid>();
+  final rightTestPointer = smarteamLib.lookup<NativeFunction<FnBoolVoid>>(kRightTest);
+  _functionsMap[kRightTest] = rightTestPointer.asFunction<FnBoolVoid>();
+  final leftTestPointer = smarteamLib.lookup<NativeFunction<FnBoolVoid>>(kLeftTest);
+  _functionsMap[kLeftTest] = leftTestPointer.asFunction<FnBoolVoid>();
 
-  return true;
+  final initFn = _functionsMap[kInit] as FnBoolVoid;
+  final eitherBool = initFn().ref;
+  if (eitherBool.isLeft != 0) {
+    return Left(helper.errorFromType(eitherBool.left));
+  }
+
+  return Right(eitherBool.right != 0);
 }
 
 Future<EitherBool> rightTest() async {
-  final rightTestFn = _functionsMap[kRightTest] as RightTest;
+  final rightTestFn = _functionsMap[kRightTest] as FnBoolVoid;
   final eitherBool = rightTestFn().ref;
   if (eitherBool.isLeft != 0) {
     return Left(helper.errorFromType(eitherBool.left));
@@ -88,7 +96,7 @@ Future<EitherBool> rightTest() async {
 }
 
 Future<EitherBool> leftTest() async {
-  final leftTestFn = _functionsMap[kLeftTest] as LeftTest;
+  final leftTestFn = _functionsMap[kLeftTest] as FnBoolVoid;
   final eitherBool = leftTestFn().ref;
   if (eitherBool.isLeft == 0) {
     return Left(SmarteamError('Left value expected, but right value returned'));
