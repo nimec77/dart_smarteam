@@ -9,36 +9,27 @@ class Smarteam {
   static final _isolateCompute = IsolateCompute();
 
   Future<EitherBool> init() async {
+    if (_isolateCompute.isRunning) {
+      return const Right(true);
+    }
     await _isolateCompute.turnOn();
 
     return _isolateCompute.compute<bool, bool>(kInit);
   }
 
-// EitherBool rightTest() {
-//   final rightTestFn = _smartFunctions[kRightTest] as RightTest;
-//   final eitherBool = rightTestFn().ref;
-//   if (eitherBool.isLeft != 0) {
-//     return Left(helper.errorFromType(eitherBool.left));
-//   }
-//
-//   return Right(eitherBool.right != 0);
-// }
-//
-// EitherBool leftTest() {
-//   final leftTestFn = _smartFunctions[kLeftTest] as LeftTest;
-//   final eitherBool = leftTestFn().ref;
-//   if (eitherBool.isLeft == 0) {
-//     return Left(SmarteamError('Left value expected, but right value returned'));
-//   }
-//
-//   return Left(helper.errorFromType(eitherBool.left));
-// }
+  Future<void> dispose() async {
+    if (!_isolateCompute.isRunning) {
+      return;
+    }
 
-// @override
-// int get hashCode => _smartFunctions.hashCode;
-//
-// @override
-// bool operator ==(Object other) {
-//   return identical(this, other);
-// }
+    await _isolateCompute.turnOff();
+  }
+
+  Future<EitherBool> rightTest() async {
+    return _isolateCompute.compute<bool, bool>(kRightTest);
+  }
+
+  Future<EitherBool> leftTest() async {
+    return _isolateCompute.compute<bool, bool>(kLeftTest);
+  }
 }

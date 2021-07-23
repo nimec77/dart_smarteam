@@ -20,21 +20,12 @@ Future<void> isolateEntryPoint(IsolateParams params) async {
 
   await for (final task in receivePort.cast<IsolateTask>()) {
     try {
-      final shouldPassParam = task.param != null;
+      final  computationResult = await runFunction(task.functionName, param: task.param);
 
-      late dynamic result;
-
-      if (task.functionName == kInit) {
-        result = await init();
-      }
-
-      if (!_functionsMap.containsKey(task.functionName)) {
-        throw ArgumentError("Function '${task.functionName} not found");
-      }
-
-      final fun = _functionsMap[task.functionName]!;
-
-      result = shouldPassParam ? await fun(task.param) : await fun();
+      final result = IsolateResult(
+        result: computationResult,
+        capability: task.capability,
+      );
 
       sendPort.send(result);
     } on Error catch (error) {
@@ -47,6 +38,30 @@ Future<void> isolateEntryPoint(IsolateParams params) async {
       sendPort.send(result);
     }
   }
+}
+
+Future<dynamic> runFunction<P>(String functionName, {P? param}) async {
+  late final dynamic result;
+
+  switch (functionName) {
+    case kInit:
+      result = await init();
+      break;
+
+    case kRightTest:
+      result = await rightTest();
+      break;
+
+    case kLeftTest:
+      result = await leftTest();
+      break;
+
+    default:
+      ArgumentError("Function '$functionName not found");
+      break;
+  }
+
+  return result;
 }
 
 Future<bool> init() async {
