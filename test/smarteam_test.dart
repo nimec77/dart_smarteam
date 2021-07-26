@@ -29,6 +29,7 @@ void main() {
       await smarteam.dispose();
       final result = await smarteam.init();
 
+      result.leftMap(print);
       expect(result, isA<EitherBool>());
       expect(result.isRight(), equals(true));
       expect(result | false, equals(true));
@@ -60,6 +61,7 @@ void main() {
     test('Smarteam UserLogoff test', () async {
       final result = await smarteam.userLogoff();
 
+      result.leftMap(print);
       expect(result, isA<EitherBool>());
       expect(result.isRight(), equals(true));
       expect(result | false, equals(true));

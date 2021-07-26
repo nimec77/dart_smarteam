@@ -22,6 +22,9 @@ class SmarteamFunction {
     final initPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kInit);
     _libraryFunctionsMap[kInit] = initPointer.asFunction<FnVoidBool>();
 
+    final closePointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kClose);
+    _libraryFunctionsMap[kClose] = closePointer.asFunction<FnVoidBool>();
+
     final rightTestPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kRightTest);
     _libraryFunctionsMap[kRightTest] = rightTestPointer.asFunction<FnVoidBool>();
 
@@ -36,6 +39,16 @@ class SmarteamFunction {
 
     final initFn = _libraryFunctionsMap[kInit] as FnVoidBool;
     final eitherBool = initFn().ref;
+    if (eitherBool.isLeft != 0) {
+      return Left(helper.errorFromType(eitherBool.left));
+    }
+
+    return Right(eitherBool.right != 0);
+  }
+
+  Future<EitherBool> close() async {
+    final closeFn = _libraryFunctionsMap[kClose] as FnVoidBool;
+    final eitherBool = closeFn().ref;
     if (eitherBool.isLeft != 0) {
       return Left(helper.errorFromType(eitherBool.left));
     }
@@ -75,8 +88,8 @@ class SmarteamFunction {
 
   Future<EitherBool> userLogin(UserLoginArg userLoginArg) async {
     final userLoginFn = _libraryFunctionsMap[kUserLogin] as FnStrStrBool;
-    final usernameNative = userLoginArg.username.toNativeUtf8();
-    final passwordNative = userLoginArg.password.toNativeUtf8();
+    final usernameNative = userLoginArg.username.toNativeUtf16();
+    final passwordNative = userLoginArg.password.toNativeUtf16();
     final eitherBool = userLoginFn(usernameNative, passwordNative).ref;
     malloc..free(usernameNative)..free(passwordNative);
     if (eitherBool.isLeft != 0) {

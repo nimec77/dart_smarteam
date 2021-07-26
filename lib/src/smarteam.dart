@@ -23,6 +23,8 @@ class Smarteam {
       return;
     }
 
+    await _isolateCompute.compute<void, bool>(kClose);
+
     await _isolateCompute.turnOff();
   }
 

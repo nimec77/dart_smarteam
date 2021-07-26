@@ -13,4 +13,4 @@ typedef EitherMap = Either<Error, Map<String, dynamic>>;
 
 typedef FnVoidBool = Pointer<EitherBoolPod> Function();
 
-typedef FnStrStrBool = Pointer<EitherBoolPod> Function(Pointer<Utf8> str1, Pointer<Utf8> str2);
+typedef FnStrStrBool = Pointer<EitherBoolPod> Function(Pointer<Utf16> str1, Pointer<Utf16> str2);
