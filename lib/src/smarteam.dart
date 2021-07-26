@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:smarteam/src/argumets/user_login_arg.dart';
 import 'package:smarteam/src/function_names.dart';
 import 'package:smarteam/src/isolate/isolate_compute.dart';
 import 'types/types.dart';
@@ -35,5 +36,9 @@ class Smarteam {
 
   Future<EitherBool> userLogoff() async {
     return _isolateCompute.compute<void, bool>(kUserLogoff);
+  }
+
+  Future<EitherBool> userLogin(String username, String password) async {
+    return _isolateCompute.compute<UserLoginArg, bool>(kUserLogin, param: UserLoginArg(username, password));
   }
 }

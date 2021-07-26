@@ -1,6 +1,8 @@
 import 'package:smarteam/smarteam.dart';
 import 'package:test/test.dart';
 
+import 'constants.dart' as test_constants;
+
 void main() {
   late final Smarteam smarteam;
 
@@ -57,6 +59,14 @@ void main() {
   group('Smarteam SmartFunctions test', () {
     test('Smarteam UserLogoff test', () async {
       final result = await smarteam.userLogoff();
+
+      expect(result, isA<EitherBool>());
+      expect(result.isRight(), equals(true));
+      expect(result | false, equals(true));
+    });
+
+    test('Smarteam UserLogin test', () async {
+      final result = await smarteam.userLogin(test_constants.kUsername, test_constants.kPassword);
 
       expect(result, isA<EitherBool>());
       expect(result.isRight(), equals(true));

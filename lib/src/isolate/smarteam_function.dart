@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
+import 'package:ffi/ffi.dart';
+import 'package:smarteam/src/argumets/user_login_arg.dart';
 
 import '../../smarteam.dart';
 import '../contants.dart';
@@ -28,6 +30,9 @@ class SmarteamFunction {
 
     final userLogoffPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kUserLogoff);
     _libraryFunctionsMap[kUserLogoff] = userLogoffPointer.asFunction<FnVoidBool>();
+
+    final userLoginPointer = smarteamLib.lookup<NativeFunction<FnStrStrBool>>(kUserLogin);
+    _libraryFunctionsMap[kUserLogin] = userLoginPointer.asFunction<FnStrStrBool>();
 
     final initFn = _libraryFunctionsMap[kInit] as FnVoidBool;
     final eitherBool = initFn().ref;
@@ -61,6 +66,19 @@ class SmarteamFunction {
   Future<EitherBool> userLogoff() async {
     final userLogoffFn = _libraryFunctionsMap[kUserLogoff] as FnVoidBool;
     final eitherBool = userLogoffFn().ref;
+    if (eitherBool.isLeft != 0) {
+      return Left(helper.errorFromType(eitherBool.left));
+    }
+
+    return Right(eitherBool.right != 0);
+  }
+
+  Future<EitherBool> userLogin(UserLoginArg userLoginArg) async {
+    final userLoginFn = _libraryFunctionsMap[kUserLogin] as FnStrStrBool;
+    final usernameNative = userLoginArg.username.toNativeUtf8();
+    final passwordNative = userLoginArg.password.toNativeUtf8();
+    final eitherBool = userLoginFn(usernameNative, passwordNative).ref;
+    malloc..free(usernameNative)..free(passwordNative);
     if (eitherBool.isLeft != 0) {
       return Left(helper.errorFromType(eitherBool.left));
     }
