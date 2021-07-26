@@ -26,10 +26,14 @@ class Smarteam {
   }
 
   Future<EitherBool> rightTest() async {
-    return _isolateCompute.compute<bool, bool>(kRightTest);
+    return _isolateCompute.compute<void, bool>(kRightTest);
   }
 
   Future<EitherBool> leftTest() async {
-    return _isolateCompute.compute<bool, bool>(kLeftTest);
+    return _isolateCompute.compute<void, bool>(kLeftTest);
+  }
+
+  Future<EitherBool> userLogoff() async {
+    return _isolateCompute.compute<void, bool>(kUserLogoff);
   }
 }

@@ -10,4 +10,4 @@ typedef EitherBool = Either<Error, bool>;
 
 typedef EitherMap = Either<Error, Map<String, dynamic>>;
 
-typedef FnBoolVoid = Pointer<EitherBoolPod> Function();
+typedef FnVoidBool = Pointer<EitherBoolPod> Function();

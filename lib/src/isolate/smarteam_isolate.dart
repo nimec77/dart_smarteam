@@ -43,6 +43,7 @@ class SmarteamIsolate {
     _smarteamFunctionsMap[kInit] = smarteamFunction.init;
     _smarteamFunctionsMap[kRightTest] = smarteamFunction.rightTest;
     _smarteamFunctionsMap[kLeftTest] = smarteamFunction.leftTest;
+    _smarteamFunctionsMap[kUserLogoff] = smarteamFunction.userLogoff;
   }
 
   static Future<dynamic> runFunction<P>(String functionName, {P? param}) async {
