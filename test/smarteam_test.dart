@@ -75,4 +75,15 @@ void main() {
       expect(result | false, equals(true));
     });
   });
+
+  group('Smarteam SmartFunctions error test', () {
+    test('Smarteam UserLogin with fake data', () async {
+      await smarteam.userLogoff();
+      final result = await smarteam.userLogin(test_constants.kUsername, '${test_constants.kPassword}1');
+
+      expect(result, isA<EitherBool>());
+      expect(result.isRight(), equals(true));
+      expect(result | true, equals(false));
+    });
+  });
 }

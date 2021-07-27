@@ -22,8 +22,8 @@ class SmarteamFunction {
     final initPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kInit);
     _libraryFunctionsMap[kInit] = initPointer.asFunction<FnVoidBool>();
 
-    final closePointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kClose);
-    _libraryFunctionsMap[kClose] = closePointer.asFunction<FnVoidBool>();
+    final closePointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kRelease);
+    _libraryFunctionsMap[kRelease] = closePointer.asFunction<FnVoidBool>();
 
     final rightTestPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kRightTest);
     _libraryFunctionsMap[kRightTest] = rightTestPointer.asFunction<FnVoidBool>();
@@ -46,9 +46,9 @@ class SmarteamFunction {
     return Right(eitherBool.right != 0);
   }
 
-  Future<EitherBool> close() async {
-    final closeFn = _libraryFunctionsMap[kClose] as FnVoidBool;
-    final eitherBool = closeFn().ref;
+  Future<EitherBool> release() async {
+    final releaseFn = _libraryFunctionsMap[kRelease] as FnVoidBool;
+    final eitherBool = releaseFn().ref;
     if (eitherBool.isLeft != 0) {
       return Left(helper.errorFromType(eitherBool.left));
     }

@@ -1,5 +1,5 @@
 const kInit = 'Init';
-const kClose = 'Close';
+const kRelease = 'Release';
 const kRightTest = 'RightTest';
 const kLeftTest = 'LeftTest';
 const kUserLogoff = 'UserLogoff';

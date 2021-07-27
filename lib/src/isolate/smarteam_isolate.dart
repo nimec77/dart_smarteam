@@ -41,7 +41,7 @@ class SmarteamIsolate {
     final smarteamFunction = SmarteamFunction();
 
     _smarteamFunctionsMap[kInit] = smarteamFunction.init;
-    _smarteamFunctionsMap[kClose] = smarteamFunction.close;
+    _smarteamFunctionsMap[kRelease] = smarteamFunction.release;
     _smarteamFunctionsMap[kRightTest] = smarteamFunction.rightTest;
     _smarteamFunctionsMap[kLeftTest] = smarteamFunction.leftTest;
     _smarteamFunctionsMap[kUserLogoff] = smarteamFunction.userLogoff;
