@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
 import 'package:ffi/ffi.dart';
-import 'package:smarteam/src/pods/either_bool_pod.dart';
+import 'package:dart_smarteam/src/pods/either_bool_pod.dart';
 
 typedef FunctionsMap = Map<String, dynamic>;
 

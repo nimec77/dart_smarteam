@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:smarteam/src/pods/exception_pod.dart';
+import 'package:dart_smarteam/src/pods/exception_pod.dart';
 
 class EitherBoolPod extends Struct {
   @Int8()

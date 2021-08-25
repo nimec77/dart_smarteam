@@ -1,4 +1,6 @@
-import 'package:smarteam/smarteam.dart';
+// ignore_for_file: avoid_print
+
+import 'package:dart_smarteam/smarteam.dart';
 import 'package:test/test.dart';
 
 import 'constants.dart' as test_constants;

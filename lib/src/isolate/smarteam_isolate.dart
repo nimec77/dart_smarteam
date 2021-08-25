@@ -1,10 +1,10 @@
 import 'dart:isolate';
 
-import 'package:smarteam/src/function_names.dart';
-import 'package:smarteam/src/isolate/isolate_result.dart';
-import 'package:smarteam/src/isolate/isolate_task.dart';
-import 'package:smarteam/src/isolate/smarteam_function.dart';
-import 'package:smarteam/src/isolate/worker.dart';
+import 'package:dart_smarteam/src/function_names.dart';
+import 'package:dart_smarteam/src/isolate/isolate_result.dart';
+import 'package:dart_smarteam/src/isolate/isolate_task.dart';
+import 'package:dart_smarteam/src/isolate/smarteam_function.dart';
+import 'package:dart_smarteam/src/isolate/worker.dart';
 
 class SmarteamIsolate {
   static final _smarteamFunctionsMap = <String, dynamic>{};
@@ -17,7 +17,7 @@ class SmarteamIsolate {
 
     await for (final task in receivePort.cast<IsolateTask>()) {
       try {
-        final computationResult = await runFunction(task.functionName, param: task.param);
+        final dynamic computationResult = await runFunction(task.functionName, param: task.param);
 
         final result = IsolateResult(
           result: computationResult,
@@ -53,7 +53,7 @@ class SmarteamIsolate {
       ArgumentError("Function '$functionName not found");
     }
 
-    final fun = _smarteamFunctionsMap[functionName];
+    final dynamic fun = _smarteamFunctionsMap[functionName];
 
     return param == null ? await fun() : await fun(param);
   }

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:smarteam/src/argumets/user_login_arg.dart';
-import 'package:smarteam/src/function_names.dart';
-import 'package:smarteam/src/isolate/isolate_compute.dart';
-import 'types/types.dart';
+import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
+import 'package:dart_smarteam/src/function_names.dart';
+import 'package:dart_smarteam/src/isolate/isolate_compute.dart';
+import 'package:dart_smarteam/src/types/types.dart';
 
 class Smarteam {
   const Smarteam();

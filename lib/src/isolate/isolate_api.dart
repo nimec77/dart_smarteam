@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:isolate';
 
+import 'package:dart_smarteam/src/isolate/worker.dart';
 import 'package:dartz/dartz.dart';
-import 'package:smarteam/src/isolate/isolate_result.dart';
-import 'package:smarteam/src/isolate/isolate_task.dart';
+import 'package:dart_smarteam/src/isolate/isolate_result.dart';
+import 'package:dart_smarteam/src/isolate/isolate_task.dart';
 
-import 'worker.dart';
 
 class IsolateAPI {
-  var isRunning = false;
+  bool isRunning = false;
 
   var _worker = Worker.empty;
 
@@ -40,7 +40,7 @@ class IsolateAPI {
 
   Future<Either<Error, R>> compute<P, R>(String functionName, {P? param}) async {
     final capability = Capability();
-    final completer = Completer();
+    final completer = Completer<dynamic>();
 
     final task = IsolateTask(
       functionName: functionName,
@@ -56,7 +56,7 @@ class IsolateAPI {
       _worker.execute(task);
     }
 
-    final result = await completer.future;
+    final dynamic result = await completer.future;
 
     if (result is Either<Error, R>) {
       return result;
@@ -66,7 +66,7 @@ class IsolateAPI {
       return Left(result);
     }
 
-    return Right(result);
+    return Right(result as R);
   }
 
   Future<void> turnOff() async {
@@ -74,7 +74,7 @@ class IsolateAPI {
 
     for (final completer in _activeTaskcompleters.values) {
       if (!completer.isCompleted) {
-        completer.complete(Left(
+        completer.complete(Left<RemoteError, dynamic>(
           RemoteError('Cancel because of isolate_compute turn off', 'Stack trace not available'),
         ));
       }

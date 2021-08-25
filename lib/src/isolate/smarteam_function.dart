@@ -1,13 +1,14 @@
 import 'dart:ffi';
 
+import 'package:dart_smarteam/src/contants.dart';
+import 'package:dart_smarteam/src/errors/errors.dart';
+import 'package:dart_smarteam/src/function_names.dart';
+import 'package:dart_smarteam/src/types/types.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ffi/ffi.dart';
-import 'package:smarteam/src/argumets/user_login_arg.dart';
+import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
 
-import '../../smarteam.dart';
-import '../contants.dart';
-import '../function_names.dart';
-import '../helper.dart' as helper;
+import 'package:dart_smarteam/src/helper.dart' as helper;
 
 class SmarteamFunction {
   final _libraryFunctionsMap = <String, dynamic>{};

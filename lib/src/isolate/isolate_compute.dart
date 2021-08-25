@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:smarteam/src/isolate/isolate_api.dart';
+import 'package:dart_smarteam/src/isolate/isolate_api.dart';
 
 class IsolateCompute {
   factory IsolateCompute() => _singleton;

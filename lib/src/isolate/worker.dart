@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:dartz/dartz.dart';
-import 'package:smarteam/src/isolate/isolate_result.dart';
-import 'package:smarteam/src/isolate/isolate_task.dart';
-import 'package:smarteam/src/isolate/smarteam_isolate.dart';
+import 'package:dart_smarteam/src/isolate/isolate_result.dart';
+import 'package:dart_smarteam/src/isolate/isolate_task.dart';
+import 'package:dart_smarteam/src/isolate/smarteam_isolate.dart';
 
 typedef ReturnType = Either<Error, dynamic>;
 
@@ -25,7 +25,7 @@ class Worker {
 
   static Worker get empty => _NullWorker();
 
-  var status = WorkerStatus.idle;
+  WorkerStatus status = WorkerStatus.idle;
 
   late final Isolate _isolate;
   late final SendPort _sendPort;
@@ -47,7 +47,7 @@ class Worker {
 
     _sendPort = await _broadcastReceivePort.first as SendPort;
 
-    _broadcastPostSubscription = _broadcastReceivePort.listen((res) {
+    _broadcastPostSubscription = _broadcastReceivePort.listen((dynamic res) {
       status = WorkerStatus.idle;
 
       onResult(res as IsolateResult);
@@ -68,14 +68,6 @@ class Worker {
 
   @override
   String toString() => 'Worker($name)';
-
-  @override
-  int get hashCode => name.hashCode;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) || other is Worker && name == other.name;
-  }
 }
 
 class _NullWorker extends Worker {

@@ -8,11 +8,14 @@ A simple usage example:
 import 'package:dart_smarteam/smarteam.dart';
 
 main() async {
-  final smarteam = const Smarteam();
+  const smarteam = Smarteam();
   await smarteam.init();
   final result = await smarteam.userLogin('username', 'password');
+  result.fold(
+    print,
+    print,
+  );
   await smarteam.dispose();
-  
 }
 ```
 For more see [examples][tests]

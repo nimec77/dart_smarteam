@@ -1,8 +1,6 @@
-import 'package:smarteam/src/errors/smart_length_error.dart';
-import 'package:smarteam/src/errors/smart_runtime_error.dart';
-import 'package:smarteam/src/errors/smarteam_error.dart';
-import 'package:smarteam/src/pods/exception_pod.dart';
-import 'package:smarteam/src/types/exception_type.dart';
+import 'package:dart_smarteam/src/errors/errors.dart';
+import 'package:dart_smarteam/src/pods/exception_pod.dart';
+import 'package:dart_smarteam/src/types/exception_type.dart';
 import 'package:ffi/ffi.dart';
 
 Error errorFromType(ExceptionPod exceptionPod) {
