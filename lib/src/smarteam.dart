@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
 import 'package:dart_smarteam/src/function_names.dart';
 import 'package:dart_smarteam/src/isolate/isolate_compute.dart';
@@ -10,10 +9,9 @@ class Smarteam {
   static final _isolateCompute = IsolateCompute();
 
   Future<EitherBool> init() async {
-    if (_isolateCompute.isRunning) {
-      return const Right(true);
+    if (!_isolateCompute.isRunning) {
+      await _isolateCompute.turnOn();
     }
-    await _isolateCompute.turnOn();
 
     return _isolateCompute.compute<bool, bool>(kInit);
   }
