@@ -7,13 +7,20 @@ A simple usage example:
 ```dart
 import 'package:dart_smarteam/smarteam.dart';
 
-main() {
-  var awesome = new Awesome();
+main() async {
+  final smarteam = const Smarteam();
+  await smarteam.init();
+  final result = await smarteam.userLogin('username', 'password');
+  await smarteam.dispose();
+  
 }
 ```
+For more see [examples][tests]
+
+[tests]: https://github.com/nimec77/dart_smarteam/blob/master/test/smarteam_test.dart
 
 ## Features and bugs
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: http://example.com/issues/replaceme
+[tracker]: https://github.com/nimec77/dart_smarteam/issues
