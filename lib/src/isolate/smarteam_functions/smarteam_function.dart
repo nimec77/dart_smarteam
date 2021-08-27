@@ -10,23 +10,29 @@ import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
 
 import 'package:dart_smarteam/src/helper.dart' as helper;
 
+part 'smart_user_function.dart';
+
 class SmarteamFunction {
+  SmarteamFunction._();
+
   static final _smarteamFunctionsMap = <String, dynamic>{};
   
   final _libraryFunctionsMap = <String, dynamic>{};
 
   static void init() {
-    final smarteamFunction = SmarteamFunction();
+    final smarteamFunction = SmarteamFunction._();
 
     _smarteamFunctionsMap[kInit] = smarteamFunction.initSmarteam;
     _smarteamFunctionsMap[kRelease] = smarteamFunction.releaseSmarteam;
     _smarteamFunctionsMap[kRightTest] = smarteamFunction.rightTest;
     _smarteamFunctionsMap[kLeftTest] = smarteamFunction.leftTest;
-    _smarteamFunctionsMap[kUserLogoff] = smarteamFunction.userLogoff;
-    _smarteamFunctionsMap[kUserLogin] = smarteamFunction.userLogin;
+    _smarteamFunctionsMap.addAll(SmartUserFunction.mapSmartUserFunctions());
   }
 
   static Future<void> dispose() async {
+    if (_smarteamFunctionsMap.isEmpty) {
+      return;
+    }
     try {
       await runFunction<EitherBool>(kRelease);
     } finally {
@@ -63,11 +69,8 @@ class SmarteamFunction {
     final leftTestPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kLeftTest);
     _libraryFunctionsMap[kLeftTest] = leftTestPointer.asFunction<FnVoidBool>();
 
-    final userLogoffPointer = smarteamLib.lookup<NativeFunction<FnVoidBool>>(kUserLogoff);
-    _libraryFunctionsMap[kUserLogoff] = userLogoffPointer.asFunction<FnVoidBool>();
+    SmartUserFunction.initSmarteam(smarteamLib);
 
-    final userLoginPointer = smarteamLib.lookup<NativeFunction<FnStrStrBool>>(kUserLogin);
-    _libraryFunctionsMap[kUserLogin] = userLoginPointer.asFunction<FnStrStrBool>();
 
     final initFn = _libraryFunctionsMap[kInit] as FnVoidBool;
     final eitherBool = initFn().ref;
@@ -106,28 +109,5 @@ class SmarteamFunction {
     }
 
     return Left(helper.errorFromType(eitherBool.left));
-  }
-
-  Future<EitherBool> userLogoff() async {
-    final userLogoffFn = _libraryFunctionsMap[kUserLogoff] as FnVoidBool;
-    final eitherBool = userLogoffFn().ref;
-    if (eitherBool.isLeft != 0) {
-      return Left(helper.errorFromType(eitherBool.left));
-    }
-
-    return Right(eitherBool.right != 0);
-  }
-
-  Future<EitherBool> userLogin(UserLoginArg userLoginArg) async {
-    final userLoginFn = _libraryFunctionsMap[kUserLogin] as FnStrStrBool;
-    final usernameNative = userLoginArg.username.toNativeUtf16();
-    final passwordNative = userLoginArg.password.toNativeUtf16();
-    final eitherBool = userLoginFn(usernameNative, passwordNative).ref;
-    malloc..free(usernameNative)..free(passwordNative);
-    if (eitherBool.isLeft != 0) {
-      return Left(helper.errorFromType(eitherBool.left));
-    }
-
-    return Right(eitherBool.right != 0);
   }
 }
