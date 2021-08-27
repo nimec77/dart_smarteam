@@ -1,7 +1,7 @@
-class SmartRuntimeError extends Error {
-  SmartRuntimeError(this.message) : super();
+import 'package:dart_smarteam/smarteam.dart';
 
-  final String message;
+class SmartRuntimeError extends SmarteamError {
+  SmartRuntimeError(String message) : super(message);
 
   @override
   String toString() => 'SmartRuntimeError: $message';

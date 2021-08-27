@@ -14,6 +14,12 @@ class SmarteamError extends Error {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) || other is SmarteamError && message == other.message;
+    if (identical(this, other)) {
+      return true;
+    }
+    if (runtimeType != other.runtimeType) {
+      return false;
+    }
+    return other is SmarteamError && message == other.message;
   }
 }

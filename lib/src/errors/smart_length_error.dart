@@ -1,7 +1,7 @@
-class SmartLengthError extends Error {
-  SmartLengthError(this.message) : super();
+import 'package:dart_smarteam/smarteam.dart';
 
-  final String message;
+class SmartLengthError extends SmarteamError {
+  SmartLengthError(String message) : super(message);
 
   @override
   String toString() => 'SmartLengthError: $message';

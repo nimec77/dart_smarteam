@@ -11,9 +11,40 @@ import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
 import 'package:dart_smarteam/src/helper.dart' as helper;
 
 class SmarteamFunction {
+  static final _smarteamFunctionsMap = <String, dynamic>{};
+  
   final _libraryFunctionsMap = <String, dynamic>{};
 
-  Future<EitherBool> init() async {
+  static void init() {
+    final smarteamFunction = SmarteamFunction();
+
+    _smarteamFunctionsMap[kInit] = smarteamFunction.initSmarteam;
+    _smarteamFunctionsMap[kRelease] = smarteamFunction.releaseSmarteam;
+    _smarteamFunctionsMap[kRightTest] = smarteamFunction.rightTest;
+    _smarteamFunctionsMap[kLeftTest] = smarteamFunction.leftTest;
+    _smarteamFunctionsMap[kUserLogoff] = smarteamFunction.userLogoff;
+    _smarteamFunctionsMap[kUserLogin] = smarteamFunction.userLogin;
+  }
+
+  static Future<void> dispose() async {
+    try {
+      await runFunction<EitherBool>(kRelease);
+    } finally {
+      _smarteamFunctionsMap.clear();
+    }
+  }
+
+  static Future<dynamic> runFunction<P>(String functionName, {P? param}) async {
+    if (!_smarteamFunctionsMap.containsKey(functionName)) {
+      ArgumentError("Function '$functionName not found");
+    }
+
+    final dynamic fun = _smarteamFunctionsMap[functionName];
+
+    return param == null ? await fun() : await fun(param);
+  }
+  
+  Future<EitherBool> initSmarteam() async {
     if (_libraryFunctionsMap.isNotEmpty) {
       return const Right(true);
     }
@@ -47,7 +78,7 @@ class SmarteamFunction {
     return Right(eitherBool.right != 0);
   }
 
-  Future<EitherBool> release() async {
+  Future<EitherBool> releaseSmarteam() async {
     final releaseFn = _libraryFunctionsMap[kRelease] as FnVoidBool;
     final eitherBool = releaseFn().ref;
     if (eitherBool.isLeft != 0) {

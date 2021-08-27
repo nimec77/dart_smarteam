@@ -61,6 +61,7 @@ class Worker {
   }
 
   Future<void> dispose() async {
+    await SmarteamIsolate.isolateDispose();
     await _broadcastPostSubscription.cancel();
     _isolate.kill();
     _receivePort.close();
