@@ -106,5 +106,16 @@ void main() {
       expect(result.isRight(), equals(true));
       expect(result | '', equals(test_constants.kEncodeTest));
     });
+
+    test('Crypto Decode error test', () async {
+      final result = await smarteam.decode(test_constants.kEncodeTest);
+
+      expect(result, isA<EitherString>());
+      expect(result.isLeft(), equals(true));
+      result.leftMap((l) {
+        expect(l, isA<SmarteamError>());
+        expect(l.toString(), equals('SmarteamError: invalid stoul argument'));
+      });
+    });
   });
 }
