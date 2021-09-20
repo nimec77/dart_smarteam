@@ -89,4 +89,22 @@ void main() {
       expect(result | true, equals(false));
     });
   });
+
+  group('Smarteam CryptoFunctions test', () {
+    test('Crypto Encode test', () async {
+      final result = await smarteam.encode(test_constants.kEncodeTest);
+
+      expect(result, isA<EitherString>());
+      expect(result.isRight(), equals(true));
+    });
+
+    test('Crypto Decode test', () async {
+      final encoded = await smarteam.encode(test_constants.kEncodeTest);
+      final result = await smarteam.decode(encoded | '');
+
+      expect(result, isA<EitherString>());
+      expect(result.isRight(), equals(true));
+      expect(result | '', equals(test_constants.kEncodeTest));
+    });
+  });
 }

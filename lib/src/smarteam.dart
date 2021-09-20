@@ -41,4 +41,12 @@ class Smarteam {
   Future<EitherBool> userLogin(String username, String password) async {
     return _isolateCompute.compute<UserLoginArg, bool>(kUserLogin, param: UserLoginArg(username, password));
   }
+
+  Future<EitherString> encode(String text) async {
+    return _isolateCompute.compute<String, String>(kEncode, param: text);
+  }
+
+  Future<EitherString> decode(String hexText) async {
+    return _isolateCompute.compute<String, String>(kDecode, param: hexText);
+  }
 }

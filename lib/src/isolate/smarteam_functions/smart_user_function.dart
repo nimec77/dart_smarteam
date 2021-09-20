@@ -1,11 +1,11 @@
 part of 'smarteam_function.dart';
 
-class SmartUserFunction {
+class SmartUserFunction  {
   SmartUserFunction._();
 
   static final _libraryFunctionsMap = <String, dynamic>{};
 
-  static Map<String, dynamic> mapSmartUserFunctions() {
+  static Map<String, dynamic> mapSmartFunctions() {
     final smartUserFunction = SmartUserFunction._();
     final functions = <String, dynamic>{};
 

@@ -1,22 +1,23 @@
 import 'dart:ffi';
 
+import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
 import 'package:dart_smarteam/src/contants.dart';
 import 'package:dart_smarteam/src/errors/errors.dart';
 import 'package:dart_smarteam/src/function_names.dart';
+import 'package:dart_smarteam/src/helper.dart' as helper;
 import 'package:dart_smarteam/src/types/types.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ffi/ffi.dart';
-import 'package:dart_smarteam/src/argumets/user_login_arg.dart';
-
-import 'package:dart_smarteam/src/helper.dart' as helper;
 
 part 'smart_user_function.dart';
+
+part 'crypto_function.dart';
 
 class SmarteamFunction {
   SmarteamFunction._();
 
   static final _smarteamFunctionsMap = <String, dynamic>{};
-  
+
   final _libraryFunctionsMap = <String, dynamic>{};
 
   static void init() {
@@ -26,7 +27,9 @@ class SmarteamFunction {
     _smarteamFunctionsMap[kRelease] = smarteamFunction.releaseSmarteam;
     _smarteamFunctionsMap[kRightTest] = smarteamFunction.rightTest;
     _smarteamFunctionsMap[kLeftTest] = smarteamFunction.leftTest;
-    _smarteamFunctionsMap.addAll(SmartUserFunction.mapSmartUserFunctions());
+    _smarteamFunctionsMap
+      ..addAll(SmartUserFunction.mapSmartFunctions())
+      ..addAll(CryptoFunction.mapSmartFunctions());
   }
 
   static Future<void> dispose() async {
@@ -49,7 +52,7 @@ class SmarteamFunction {
 
     return param == null ? await fun() : await fun(param);
   }
-  
+
   Future<EitherBool> initSmarteam() async {
     if (_libraryFunctionsMap.isNotEmpty) {
       return const Right(true);
@@ -70,7 +73,7 @@ class SmarteamFunction {
     _libraryFunctionsMap[kLeftTest] = leftTestPointer.asFunction<FnVoidBool>();
 
     SmartUserFunction.initSmarteam(smarteamLib);
-
+    CryptoFunction.initSmarteam(smarteamLib);
 
     final initFn = _libraryFunctionsMap[kInit] as FnVoidBool;
     final eitherBool = initFn().ref;
