@@ -16,6 +16,8 @@ typedef EitherString = Either<Error, String>;
 
 typedef FnVoidBool = Pointer<EitherBoolPod> Function();
 
+typedef FnVoidStr = Pointer<EitherStringPod> Function();
+
 typedef FnStrStr = Pointer<EitherStringPod> Function(Pointer<Utf16> str);
 
 typedef FnStrStrBool = Pointer<EitherBoolPod> Function(Pointer<Utf16> str1, Pointer<Utf16> str2);

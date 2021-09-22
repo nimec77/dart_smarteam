@@ -42,6 +42,10 @@ class Smarteam {
     return _isolateCompute.compute<UserLoginArg, bool>(kUserLogin, param: UserLoginArg(username, password));
   }
 
+  Future<EitherString> getSid() async {
+    return _isolateCompute.compute<void, String>(kGetSid);
+  }
+
   Future<EitherString> encode(String text) async {
     return _isolateCompute.compute<String, String>(kEncode, param: text);
   }

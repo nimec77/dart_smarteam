@@ -4,5 +4,6 @@ const kRightTest = 'RightTest';
 const kLeftTest = 'LeftTest';
 const kUserLogoff = 'UserLogoff';
 const kUserLogin = 'UserLogin';
+const kGetSid = 'GetSid';
 const kEncode = 'Encode';
 const kDecode = 'Decode';

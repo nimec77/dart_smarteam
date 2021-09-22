@@ -91,6 +91,13 @@ void main() {
   });
 
   group('Smarteam CryptoFunctions test', () {
+    test('Crypto GetSid test', () async {
+      final result = await smarteam.getSid();
+
+      expect(result, isA<EitherString>());
+      expect(result.isRight(), equals(true));
+    });
+
     test('Crypto Encode test', () async {
       final result = await smarteam.encode(test_constants.kEncodeTest);
 
